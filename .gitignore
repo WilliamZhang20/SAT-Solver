@@ -1,0 +1,10 @@
+/target
+.vscode/
+
+*.exe
+*.dll
+*.so
+*.dylib
+
+**/*.rs.bk
+*~
