@@ -93,15 +93,22 @@ fn undo_changes(cnf: &mut CNF, changes: Vec<Change>) {
 }
 
 fn pick_unassigned_literal(cnf: &CNF, assignment: &Assignment) -> Option<Literal> {
+    let mut literal_counts: HashMap<Literal, usize> = HashMap::new();
+
     for clause in cnf {
         for &lit in clause {
             let var = lit.abs();
             if !assignment.contains_key(&var) {
-                return Some(lit); // pick first unassigned literal
+                *literal_counts.entry(lit).or_insert(0) += 1;
             }
         }
     }
-    None
+
+    // Return the literal with highest count
+    literal_counts
+        .into_iter()
+        .max_by_key(|&(_, count)| count)
+        .map(|(lit, _)| lit)
 }
 
 pub fn dpll_solve(cnf: &mut CNF, assignment: &mut Vec<Literal>) -> bool {

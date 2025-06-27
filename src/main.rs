@@ -1,6 +1,8 @@
 mod dp_solver;
 mod dpll_solver;
 
+use std::time::Instant;
+
 use dp_solver::dp_solve;
 use dpll_solver::dpll_solve;
 use dpll_solver::CNF; // reuse one CNF type (they must match)
@@ -17,12 +19,15 @@ fn main() {
     // Run DPLL
     let mut dpll_assignment = Vec::new();
     println!("Running DPLL...");
+    // let start = Instant::now();
     if dpll_solve(&mut cnf, &mut dpll_assignment) {
         println!("DPLL: SAT");
         println!("Assignment: {:?}", dpll_assignment);
     } else {
         println!("DPLL: UNSAT");
     }
+    // let duration = start.elapsed();
+    // println!("Elapsed time: {:?}", duration);
 
     // Run DP
     let mut dp_assignment = Vec::new();
